@@ -1,0 +1,10 @@
+IF outside sensor if_crossed returns TRUE
+    SET outside_state to TRUE
+IF outside sensor if_crossed returns FALSE AND outside_state to TRUE
+    SET outside_state to FALSE
+
+IF inside sensor if_crossed returns TRUE
+    SET inside_state to TRUE
+IF inside sensor if_crossed returns FALSE AND inside_state to TRUE
+    SET inside_state to FALSE
+
