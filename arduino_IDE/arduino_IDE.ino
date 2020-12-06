@@ -12,11 +12,26 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println("Inside");
-  outside.read_senseVal();
-  outside.print_senseVal();
-  Serial.println("Outside");
-  inside.read_senseVal();
-  inside.print_senseVal();
-  Serial.println("------------------------------------------------");
+  outside.read();
+  inside.read();
+  outside.set_threshold(3900);
+  inside.set_threshold(3900);
+  before_while = mills();
+  while (outside.if_crossed())
+  { 
+    
+    if(inside.if_crossed())
+    {
+      Serial.println("Entered room");
+    }
+  }
+
+  if (inside.if_crossed())
+  {
+    delay(200);
+    if(outside.if_crossed())
+    {
+      Serial.println("Left room");
+    }
+  }
 }

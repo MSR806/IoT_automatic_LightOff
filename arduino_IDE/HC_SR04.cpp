@@ -10,20 +10,26 @@ void HC_SR04::begin(){
     pinMode(_echoPin, INPUT);
 }
 
-void HC_SR04::read_senseVal(){
+void HC_SR04::read(){
     digitalWrite(_trigPin, LOW);
     delayMicroseconds(2);
     digitalWrite(_trigPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(_trigPin, LOW);
-    _senseVal = pulseIn(_echoPin, HIGH);
+    _sensorValue = pulseIn(_echoPin, HIGH);
 }
 
-void HC_SR04::print_senseVal(){
-    Serial.println(_senseVal);
-    delay(500);
+void HC_SR04::set_threshold(int threshold){
+    _threshold = threshold;
 }
 
-//HC_SR04::check(){
-
-//}
+bool HC_SR04::if_crossed(){
+    if (_sensorValue < _threshold)
+        return true;
+    else
+        return false;
+}
+long HC_SR04::sensor_value(){
+    return _sensorValue;
+}
+ 
