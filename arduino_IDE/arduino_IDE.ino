@@ -2,6 +2,7 @@
 
 HC_SR04 outside(12, 13);
 HC_SR04 inside(7, 6);
+int ledPin = 5;
 
 bool inside_activated = false;
 bool inside_update = false;
@@ -12,12 +13,16 @@ long lastActive_outside = 0;
 long lastActive_inside = 0;
 long lastprint = 0;
 int count = 0;
+int last_count = 0;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   outside.begin();
   inside.begin();
+  pinMode(ledPin, OUTPUT);
+  Serial.print("Number of people = ");
+  Serial.println(count);
 }
 
 void loop() {
@@ -71,16 +76,30 @@ void loop() {
       outside_update = false;
     }
   }
-
   
-  if(now - lastprint > 400){
+  if(count >0){
+    digitalWrite(ledPin, HIGH);
+  }
+  else{
+    digitalWrite(ledPin, LOW);
+  }
+
+
+  // Printing Stuff
+  if(count < 0){
+    count = 0;
+  }
+  if(count != last_count){
+    if(count == 0){
+      Serial.println("Lights OFF");
+    }
+    else if(last_count == 0 && count >0){
+    Serial.println("Lights ON");
+    }
+    
     Serial.print("Number of people = ");
     Serial.println(count);
-    Serial.print("outside_activated = ");
-    Serial.println(outside_activated);
-    Serial.print("inside_activated = ");
-    Serial.println(inside_activated);
-    lastprint = now;
+    last_count = count;
   }
   
 }
